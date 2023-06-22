@@ -1,0 +1,152 @@
+<!DOCTYPE HTML>
+<!--
+	Hyperspace by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Generic - Hyperspace by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<style>
+			/* 좌석 스타일 */
+			.seat {
+				width: 75px;
+				height: 75px;
+				margin: 10px;
+				border: 1px solid black;
+				display: inline-block;
+				text-align: center;
+				line-height: 50px;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			
+			/* 예약된 좌석 스타일 */
+			.reserved {
+				background-color: gray;
+				color: white;
+				cursor: not-allowed;
+			}
+		</style>
+
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<a href="index.html" class="title"><img src="images/title1.png" height=:auto></a>
+				<nav>
+					<ul>
+						<li><a href="index.html">Home</a></li>
+						<li><a href="book.php" target="_blank">예약하기</a></li>
+						<li><a href="mypage.html">마이페이지</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper">
+						<div class="inner">
+							<h1 class="major">1인실 예약하기</h1>
+							
+							<h2>좌석배치도</h2>
+    
+    <div id="seatMap">
+        <!-- 좌석 배치를 동적으로 생성 -->
+    </div>
+    
+    <script>
+        // 좌석 정보
+        const seatMap = [
+            [1, 2, 3, 4, 5],
+            [6, 7, 8, 9, 10],
+            [11, 12, 13, 14, 15]
+        ];
+        
+        // 예약된 좌석
+        const reservedSeats = [];
+        
+       // 좌석 배치 생성
+		const seatMapDiv = document.getElementById("seatMap");
+		for (let i = 0; i < seatMap.length; i++) {
+			const rowDiv = document.createElement("div");
+			for (let j = 0; j < seatMap[i].length; j++) {
+				const seatDiv = document.createElement("div");
+				seatDiv.className = "seat";
+				seatDiv.textContent = seatMap[i][j];
+				seatDiv.setAttribute("data-seat", seatMap[i][j]); // 좌석 번호를 data-seat 속성으로 추가
+				
+				if (reservedSeats.includes(seatMap[i][j])) {
+					seatDiv.classList.add("reserved");
+					seatDiv.setAttribute("title", "예약됨");
+					seatDiv.disabled = true;
+				} else {
+					seatDiv.setAttribute("title", "예약 가능");
+					seatDiv.addEventListener("click", function() {
+						reserveSeat(seatMap[i][j]);
+					});
+				}
+				
+				rowDiv.appendChild(seatDiv);
+			}
+			seatMapDiv.appendChild(rowDiv);
+		}
+				
+        // 좌석 예약
+		function reserveSeat(seatNumber) {
+			const seatDiv = document.querySelector(`.seat[data-seat="${seatNumber}"]`);
+			if (reservedSeats.includes(seatNumber)) {
+				// 이미 예약된 좌석 선택 시 취소 동작
+				const index = reservedSeats.indexOf(seatNumber);
+				reservedSeats.splice(index, 1);
+				
+				seatDiv.classList.remove("reserved");
+				seatDiv.removeAttribute("title");
+				seatDiv.disabled = false;
+				
+				alert(seatNumber + "번 좌석 예약을 취소합니다.");
+			} else {
+				// 예약되지 않은 좌석 선택 시 예약 동작
+				reservedSeats.push(seatNumber);
+				
+				seatDiv.classList.add("reserved");
+				seatDiv.setAttribute("title", "예약됨");
+				seatDiv.disabled = true;
+				
+				alert(seatNumber + "번 좌석을 예약합니다.");
+			}
+		}
+    </script>
+				</div>
+			</section>
+
+	</div>
+
+		<!-- Footer -->
+			<footer id="footer" class="wrapper alt">
+				<div class="inner">
+					<ul class="menu">
+						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>
